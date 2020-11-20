@@ -17,7 +17,8 @@ public class Kunde implements Observer {
 	}
 
 	@Override
-	public void update() {
+	public void update(String msg) {
+		System.out.println("Wow I like these news: " + msg);
 		paymentMethod.payRequired();
 	}
 

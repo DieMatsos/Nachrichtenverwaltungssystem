@@ -4,7 +4,7 @@ import interfaces.PaymentMethod;
 
 public class PaymentSingle implements PaymentMethod {
 
-	private double price = 3;
+	private int price = 3;
 
 	@Override
 	public boolean payRequired() {
@@ -13,11 +13,11 @@ public class PaymentSingle implements PaymentMethod {
 
 	@Override
 	public void pay() {
-		//sendMoney
+		Nachrichtenkanal.receivePayment(price);
 	}
 
 	@Override
 	public boolean paymentComplete() {
-		return false;
+		return true;
 	}
 }

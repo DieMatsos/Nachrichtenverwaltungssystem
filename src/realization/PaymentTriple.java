@@ -4,21 +4,28 @@ import interfaces.PaymentMethod;
 
 public class PaymentTriple implements PaymentMethod {
 
-	private double price = 9;
+	private int price = 9;
 	private int count;
+	private boolean paid;
 
 	@Override
 	public boolean payRequired() {
-		return count % 3 == 0;
+		if(count % 3 == 0) {
+			pay();
+			return true;
+		}
+		paid = false;
+		return false;
 	}
 
 	@Override
 	public void pay() {
-		//TODO
+		Nachrichtenkanal.receivePayment(price);
+		paid = true;
 	}
 
 	@Override
 	public boolean paymentComplete() {
-		return false;
+		return paid;
 	}
 }

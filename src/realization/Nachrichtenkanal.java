@@ -8,6 +8,7 @@ import java.util.List;
 public class Nachrichtenkanal implements Observable {
 
 	List<Observer> kunden;
+	static int konto;
 
 	public Nachrichtenkanal(List<Observer> kunden) {
 		this.kunden = kunden;
@@ -30,7 +31,11 @@ public class Nachrichtenkanal implements Observable {
 	@Override
 	public void notifyObservers() {
 		kunden.forEach( k -> {
-				k.update();
+				k.update("News ALERT!");
 		});
+	}
+
+	static void receivePayment(int amount) {
+		konto += amount;
 	}
 }
