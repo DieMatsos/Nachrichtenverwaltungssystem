@@ -1,10 +1,12 @@
 package interfaces;
 
+import realization.Nachrichtenkanal;
+
 public interface PaymentMethod {
 
-	boolean payRequired();
+	boolean payRequired(Nachrichtenkanal nachrichtenkanal);
 
-	void pay();
+	void pay(Observable observable);
 
 	boolean paymentComplete();
 

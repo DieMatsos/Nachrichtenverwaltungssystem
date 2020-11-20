@@ -9,9 +9,9 @@ public class PaymentTriple implements PaymentMethod {
 	private boolean paid;
 
 	@Override
-	public boolean payRequired() {
-		if(count % 3 == 0) {
-			pay();
+	public boolean payRequired(Nachrichtenkanal kanal) {
+		if(++count % 3 == 0) {
+			pay(kanal);
 			return true;
 		}
 		paid = false;
@@ -19,8 +19,8 @@ public class PaymentTriple implements PaymentMethod {
 	}
 
 	@Override
-	public void pay() {
-		Nachrichtenkanal.receivePayment(price);
+	public void pay(Nachrichtenkanal kanal) {
+		kanal.receivePayment(price);
 		paid = true;
 	}
 

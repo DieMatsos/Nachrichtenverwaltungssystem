@@ -1,5 +1,7 @@
 import realization.Kunde;
 import realization.Nachrichtenkanal;
+import realization.PaymentSingle;
+import realization.PaymentTriple;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,11 +9,8 @@ import java.util.Scanner;
 
 public class Main {
 
-    /* Diese Klasse ist an diversen TODO-Stellen unvollständig
-     * und muss ergänzt werden.
-     */
 
-    private List<Kunde> kunden = new ArrayList<Kunde>();
+    private List<Kunde> kunden = new ArrayList<>();
     private List<Nachrichtenkanal> kanaele = new ArrayList<>();
 
     public void dialog() {
@@ -69,30 +68,51 @@ public class Main {
 
     private void nachrichtVeraendern() {
         Nachrichtenkanal nk = nachrichtenkanalWaehlen();
-        /* TODO */
+        nk.notifyObservers(textEingeben("Bitte eine Nachricht eingeben\n"));
     }
 
     private void nachrichtenkanalstatistik() {
-        /* TODO */
+        kanaele.forEach(k -> System.out.println(k.getStatistics()));
     }
 
     private void neuesAbonnement() {
-        // fehlt Prüfung auf leere Listen
+        if (kunden.isEmpty()) {
+            throw new IllegalStateException("Kundenliste ist leer");
+        }
         int i = 1;
         System.out.println("Welcher Kunde? ");
         for (Kunde k : kunden)
             System.out.println(" (" + (i++) + ") " + k);
         Kunde kunde = kunden.get(nummerwaehlen(kunden.size()) - 1);
         Nachrichtenkanal nk = nachrichtenkanalWaehlen();
-        /* TODO */
+        kunde.subscribe(nk);
     }
 
     private void neuerNachrichtenkanal() {
-        /* TODO */
+        String name = textEingeben("Namen für Kanal eingeben\n");
+        kanaele.add(new Nachrichtenkanal(name));
     }
 
     private void neuerKunde() {
-        /* TODO */
+        String name = textEingeben("Name für Kunden eingeben\n");
+        Kunde k = new Kunde(name);
+        System.out.println("Payment-Methode wählen\n"
+                + " (0) Pro Nachricht 3€\n"
+                + " (1) Alle 3 Nachrichten 9€");
+        int eingabe = new Scanner(System.in).nextInt();
+        switch (eingabe) {
+            case 0:
+                k.choosePayment(new PaymentSingle());
+                break;
+            case 1:
+                k.choosePayment(new PaymentTriple());
+                break;
+            default:
+                throw new IllegalArgumentException("Nummer " + eingabe + " ist nicht definiert");
+        }
+        kunden.add(k);
+        System.out.println("Kunde \"" + name + "\" wurde angelegt");
+        dialog();
     }
 
     public static void main(String[] args) {

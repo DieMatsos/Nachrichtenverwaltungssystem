@@ -1,5 +1,6 @@
 package realization;
 
+import interfaces.Observable;
 import interfaces.PaymentMethod;
 
 public class PaymentSingle implements PaymentMethod {
@@ -7,13 +8,15 @@ public class PaymentSingle implements PaymentMethod {
 	private int price = 3;
 
 	@Override
-	public boolean payRequired() {
+	public boolean payRequired(Nachrichtenkanal nachrichtenkanal) {
+		pay(nachrichtenkanal);
 		return true;
 	}
 
 	@Override
-	public void pay() {
-		Nachrichtenkanal.receivePayment(price);
+	public void pay(Observable kanal) {
+		kanal.receivePayment(price);
+
 	}
 
 	@Override

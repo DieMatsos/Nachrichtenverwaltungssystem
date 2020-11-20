@@ -7,18 +7,20 @@ import interfaces.PaymentMethod;
 public class Kunde implements Observer {
 
 	private PaymentMethod paymentMethod;
+	private String name;
 
-	public Kunde() {
+	public Kunde(String name) {
+		this.name = name;
 		paymentMethod = null;
 	}
 
-	public Kunde(PaymentMethod paymentMethod) {
+	public Kunde(PaymentMethod paymentMethod, String name) {
 		this.paymentMethod = paymentMethod;
+		this.name = name;
 	}
 
 	@Override
 	public void update(String msg) {
-		System.out.println("Wow I like these news: " + msg);
 		paymentMethod.payRequired();
 	}
 
@@ -38,5 +40,10 @@ public class Kunde implements Observer {
 	@Override
 	public void choosePayment(PaymentMethod paymentMethod) {
 		this.paymentMethod = paymentMethod;
+	}
+
+	@Override
+	public String toString() {
+		return name;
 	}
 }
