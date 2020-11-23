@@ -3,13 +3,16 @@ package realization;
 import interfaces.Observable;
 import interfaces.PaymentMethod;
 
-public class PaymentSingle implements PaymentMethod {
+public class PaymentEveryThird implements PaymentMethod {
 
-    private final int price = 3;
+    private final int price = 9;
+    private int count;
 
     @Override
     public void checkIfPayRequired(Observable observable) {
-        pay(observable);
+        if( ++count % 3 == 0) {
+            pay(observable);
+        }
     }
 
     @Override

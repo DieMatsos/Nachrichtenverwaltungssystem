@@ -11,4 +11,5 @@ public interface Observer {
 
 	void choosePayment(PaymentMethod paymentMethod);
 
+    String getLastMsg();
 }

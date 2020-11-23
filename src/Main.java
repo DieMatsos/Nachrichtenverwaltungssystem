@@ -1,7 +1,7 @@
 import realization.Kunde;
 import realization.Nachrichtenkanal;
 import realization.PaymentSingle;
-import realization.PaymentTriple;
+import realization.PaymentEveryThird;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -68,7 +68,9 @@ public class Main {
 
     private void nachrichtVeraendern() {
         Nachrichtenkanal nk = nachrichtenkanalWaehlen();
-        nk.notifyObservers(textEingeben("Bitte eine Nachricht eingeben\n"));
+        String msg = textEingeben("Text der neuen Nachricht: ");
+        nk.notifyObservers(msg);
+        nk.getKundenliste().keySet().forEach( k -> System.out.println(k.name + " erhält: " + k.getLastMsg()));
     }
 
     private void nachrichtenkanalstatistik() {
@@ -105,7 +107,7 @@ public class Main {
                 k.choosePayment(new PaymentSingle());
                 break;
             case 1:
-                k.choosePayment(new PaymentTriple());
+                k.choosePayment(new PaymentEveryThird());
                 break;
             default:
                 throw new IllegalArgumentException("Nummer " + eingabe + " ist nicht definiert");

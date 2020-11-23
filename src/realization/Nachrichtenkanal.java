@@ -2,50 +2,57 @@ package realization;
 
 import interfaces.Observable;
 import interfaces.Observer;
+import interfaces.PaymentMethod;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.LinkedHashMap;
 
 public class Nachrichtenkanal implements Observable {
 
-    List<Observer> kunden;
+    LinkedHashMap<Observer, PaymentMethod> kundenliste;
     int konto;
     private String name;
 
-    public Nachrichtenkanal(List<Observer> kunden) {
-        this.kunden = kunden;
-    }
-
     public Nachrichtenkanal(String name) {
-        this.kunden = new ArrayList<>();
+        this.kundenliste = new LinkedHashMap<>();
         this.name = name;
     }
 
     @Override
-    public void addObserver(Observer observer) {
-        kunden.add(observer);
+    public void addObserver(Observer observer, PaymentMethod method) {
+        kundenliste.put(observer, method);
     }
 
     @Override
     public void removeObserver(Observer observer) {
-        kunden.remove(observer);
+        kundenliste.remove(observer);
     }
 
     @Override
     public void notifyObservers(String msg) {
-        kunden.forEach(k -> {
-            k.update(msg);
-        });
+        kundenliste.keySet().forEach(k -> k.update("[" + name + "] " + msg));
+        askForMoney();
     }
-    public void receivePayment(int amount) {
-        konto += amount;
+
+    @Override
+    public void receivePayment(int price) {
+        konto += price;
+    }
+
+    private void askForMoney() {
+        kundenliste.values().forEach(p -> {
+            p.checkIfPayRequired(this);
+        });
     }
 
     public String getStatistics() {
-        return toString() + ": Kunden: " + kunden.size() + ", Geld: " + konto + "€";
+        return toString() + ": Kunden: " + kundenliste.size() + ", Geld: " + konto + "€";
     }
 
     public String toString() {
         return name;
+    }
+
+    public LinkedHashMap<Observer, PaymentMethod> getKundenliste() {
+        return kundenliste;
     }
 }

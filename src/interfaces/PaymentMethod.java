@@ -4,10 +4,8 @@ import realization.Nachrichtenkanal;
 
 public interface PaymentMethod {
 
-	boolean payRequired(Nachrichtenkanal nachrichtenkanal);
+	void checkIfPayRequired(Observable observable);
 
 	void pay(Observable observable);
-
-	boolean paymentComplete();
 
 }
